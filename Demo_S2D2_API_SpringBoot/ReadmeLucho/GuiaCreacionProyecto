@@ -112,12 +112,27 @@ CREAR UN PROYECTO EN INTELLIJ USANDO SPRING BOOT
 
 
 
----RESUMEN---
+	
+6. SUBIR EL REPO A GITHUB
+	#create GitRepo_DBP in GitHub
+	git remote add origin git@github.com:LuissBarahona/GitRepo_DBP.git
+	git branch -M main
+	git status
+	git commit -m ""
+	git push --set-upstream origin main
+	
+	OK
+	
+	
+
+
+7. RESUMEN
+
+
 	- folder/paquete controller → define los endpoints
 		- es el único qeu sabe qué hacer ante las solicitudes que realiza un cliente
 		- le inyectarón un conjunto de dependencias mediante ArtistRepository. NO ES ADECUADO QUE REPOSITORY SE CONECTE DIRECTAMENTE AL CONTROLLER. En las siguientes demos, veremos que es importante usar un Service Layer como ente intermediario.
 	- filder domain -> define los modelos
 		- contiene a la entidad Artist como un arvhivo .java
 	- 
-
 	
