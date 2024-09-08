@@ -1,0 +1,123 @@
+/* DETALLES DEL PROYECTO
+	- Topic: Implementar un API que permita insertar datos de un artista en un H2 database y devolverlos mediante requests de tipo HTTP
+	- Author: Prof. Noel Rabines, Mateo
+	- Student: Barahona Valdivieso, Luis David
+	- Status: Done
+	- Path: /home/luisbarahona/Documents/CreatedByBarahona/Repositories_Code/DBP_Repository/Demo_S2D2_API_SpringBoot
+*/
+	
+---PARTE 1 ---
+	
+CREAR UN PROYECTO EN INTELLIJ USANDO SPRING BOOT
+
+1. Abrir IntelliJ
+	cd ~/Documents/CreatedByBarahona/Installers/idea-IU-242.21829.142/bin$ 
+	./idea.sh //ejecutar
+	
+2. New Project
+	Name: Demo_S2D2_API_SpringBoot
+	Type: Maven
+	Group: com.example
+	JDK 22
+	Java 17
+	Jar
+	
+	Dependencies:
+		spring data JPA
+		spring web -> (para manejar las peticiones HTTP)
+		H2 database -> es una base de datos en cache
+		postgreSQL driver	
+	Ojito: 
+		Si falta alguna dependencia, podemos simpleente escribirla en el .java y dejarnos ayudar por el asistente virtual (Es necesario que esa nueva dependencia aparezaca en el pom.xml)
+
+3. Create the first API inside a controller
+	go to the com.example
+	create a new package called: controller
+	go to the controller
+	inside create the the first controller called as a java class: ArtistController.java
+	
+	CODEAR inside ArtistController.java
+	
+4. Ejecutar programa
+	run DemoS2D2ApiSpringBootApplication -> yace en com.example
+	
+	
+5. Empaquetar proyecto como un archivo .jar
+	click maven in the GRaphical User Interface
+	click m folder
+	click lifecycle -> select al mismo ctiempo package and clear
+	click ti run para que se genere el .jar
+	go to the Repo/target folder para encontrar el .jar
+	
+
+
+---PARTE 2 : AGREGAR UNA BASE DE DATOS VOLATIL A LO ANTERIOR ---
+1. CAPA application
+	change the name of the controller folder to application usign refactor-> inside is ArtistControler
+	
+2. CAPA comain
+	create domain folfer inside com.example (al nivel de application)
+		create a class called Artist.java
+	
+3. CAPA repository
+	create repository folfer inside com.example (al nivel de application)
+		create an INTERFACE para injección de dependencias called: ArtistRepository.java
+		
+		
+4. TESTEAR USANDO POSTMAN
+	4.1 Testear método post (ingresar data en formato JSON)
+		localhost:8080/artist
+		choose body -> raw and insert the following:
+			{
+			    "name": "Lucho", 
+			    "bio": "Ingeniera Electronica",
+			    "birthDate": "2001-03-24"
+			}
+			
+	
+5. LA BASE DE DATOS DE ESTE PROYECTO es H2 database
+	- Los datos no se guardan, xq estamos usando H2database, una base de datos en cache
+	- Se recomienda usar docker para crear una base de datos en un contenedor (se realizará en otro proyecto)
+	
+	
+---PARTE 3: AGREGAR UNA BASE DE DATOS POSTGRES IN DOCKER ---
+	- Más info: google: How to easily create a Postgres database in Docker
+	- Docker permite crear contenedores virtuales
+	- Un contenedor virtual es un espacio que corre programas en otro sistemas operativo
+	
+	>Abrir DOcker Graphical User Interface o en su defecto Abrir Docker from CLI
+	>docker run --name postgres-db -e POSTGRES_PASSWORD=postgres -p 5432:5555 -d postgres
+		- 5432: puerto donde corre postgress por defecto
+		- 5555: puerto donde corre postgrees desde nuestro computador
+	
+	- La base de datos correrá en un puerto
+	
+	- Conectar SpringBoot con la base de datos creadar en Docker
+		go to src/main/java/resources->application.properties
+			/* CONTENIDO DEL ARCHIVO			
+				spring.application.name=Demo_S2D2_API_SpringBoot #viene por defecto
+				sever.port=9091 #le indico en qué puerto debe correr mi programa (su uso es opcional)
+				#conectarnos a la base de datos
+				spring.datasource.url = #buscar url desde a graphical user interface de IntelliJ 2024
+				spring.datasource.username = postgres
+				spring.datasource.password = password
+				
+			
+			*/
+			
+			/* CÓMO BUSCAR EL URL de la BASE DE DATOS
+			
+			*/
+
+
+
+
+---RESUMEN---
+	- folder/paquete controller → define los endpoints
+		- es el único qeu sabe qué hacer ante las solicitudes que realiza un cliente
+		- le inyectarón un conjunto de dependencias mediante ArtistRepository. NO ES ADECUADO QUE REPOSITORY SE CONECTE DIRECTAMENTE AL CONTROLLER. En las siguientes demos, veremos que es importante usar un Service Layer como ente intermediario.
+	- filder domain -> define los modelos
+		- contiene a la entidad Artist como un arvhivo .java
+	- 
+
+	
