@@ -2,6 +2,8 @@ package com.example.demo_s2d2_api_springboot.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity//le dice al progeama que esto va a una base de datos
@@ -16,4 +18,8 @@ public class Artist {
     private String bio;
     @Column
     private String birthDate;
+
+    @OneToMany(mappedBy="artist", cascade=CascadeType.ALL, fetch= FetchType.LAZY)
+    private List<Song> songs;
+
 }

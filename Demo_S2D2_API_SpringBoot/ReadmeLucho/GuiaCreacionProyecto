@@ -1,9 +1,10 @@
 /* DETALLES DEL PROYECTO
-	- Topic: Implementar un API que permita insertar datos de un artista en un H2 database y devolverlos mediante requests de tipo HTTP
+	- Topic (RestAPI): Implementar un API que permita insertar datos de un artista en un H2 database y devolverlos mediante requests de tipo HTTP
 	- Author: Prof. Noel Rabines, Mateo
 	- Student: Barahona Valdivieso, Luis David
 	- Status: Done
 	- Path: /home/luisbarahona/Documents/CreatedByBarahona/Repositories_Code/DBP_Repository/Demo_S2D2_API_SpringBoot
+	- Sufre de referencia circular al serializar
 */
 	
 ---PARTE 1 ---
@@ -90,7 +91,17 @@ CREAR UN PROYECTO EN INTELLIJ USANDO SPRING BOOT
 		- 5432: puerto donde corre postgress por defecto
 		- 5555: puerto donde corre postgrees desde nuestro computador
 	
-	- La base de datos correrá en un puerto
+	>Correr el contenedor creado desde una terminal linux
+		 La base de datos correrá en un puerto
+		 #ver los contenedores que tenemos
+		docker ps -a
+		#Activar docker desde la terminal
+		sudo systemctl start docker
+		#verificar que un determinado contenedor esté corriendo
+		sudo systemctl status docker
+		#correr uno de mis contenedores en docker
+		docker start <nombre_del_contenedor_o_ID>
+		docker start 6f0a091ab6dd
 	
 	- Conectar SpringBoot con la base de datos creadar en Docker
 		go to src/main/java/resources->application.properties
@@ -106,7 +117,13 @@ CREAR UN PROYECTO EN INTELLIJ USANDO SPRING BOOT
 			*/
 			
 			/* CÓMO BUSCAR EL URL de la BASE DE DATOS
-			
+				Go to the database symbol
+				create a new database -> click postgresSQL
+				connect to prostgress (el postgress que creamos dentro de docker)
+				usuario: postgres
+				contra: postgres
+				port: 5555 (ppuerto en el que esta corriendo el contenedor en mi laptop)
+				test connection -> debe ser exitosa 
 			*/
 
 
@@ -135,4 +152,62 @@ CREAR UN PROYECTO EN INTELLIJ USANDO SPRING BOOT
 	- filder domain -> define los modelos
 		- contiene a la entidad Artist como un arvhivo .java
 	- 
+	
+---PARTE 4: Relaciones entre entidades --- Desarrollada en la rama1
+
+8. CREAR RELACIONES ENTRE ENTIDADES
+	RELACIÓN 1: Artista - Canción (OneToMany)
+		Un artista puede tener muchas canciones, pero una canción solo puede tener un artista.
+		Dentro de la entidad Artist.java:
+			/*
+				@OneToMany(mappedBy="artist", cascade=CascadeType.ALL, fetch= FetchType.LAZY)
+				private List<Song> songs;
+			*/
+	
+	Crear una nueva entidad de tipo Java Class dentro de Domain ->  song.Java
+			/*
+				package com.example.demo_s2d2_api_springboot.domain;
+
+				import jakarta.persistence.*;
+				import lombok.Data;
+
+				import java.time.LocalDate;
+
+				@Data
+				@Entity
+				public class Song {
+				    @Id
+				    @GeneratedValue(strategy = GenerationType.IDENTITY)
+				    private Long id;
+				    private String titulo;
+				    private LocalDate releaseDate;
+
+				    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+				    @JoinColumn(name="artist_id")
+				    private Artist artist;
+				}
+
+			
+			*/
+		
+	
+9. TESTEAR EN POSTMAN
+	#CREAR UN NUEVO ARTISTA USANDO EL MÉTODO POST
+	/* BODY OF THE POST
+		{
+		    "name": "Na", 
+		    "bio": "",
+		    "birthDate": "2003-05-10",
+		    "songs": [{
+			
+			"titulo":"cancion1",
+			"releaseDate":"2001-01-01"
+
+			
+		    }]
+		}
+	
+	*/	
+	
+	
 	
