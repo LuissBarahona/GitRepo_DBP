@@ -1,5 +1,5 @@
 /*ESTADO DEL PROYECTO
-	- Topic: Incorporar dos exceptions al proyecto Demo_S2D2_API_SpringBoot 
+	- Topic: Incorporar dos exceptions al proyecto Demo_S2D2_API_SpringBoot  (RESTAPI)
 	- Author: Prof. Noel Rabines, Mateo
 	- Student: Barahona Valdivieso, Luis David
 	- Status: Done
