@@ -1,0 +1,66 @@
+
+
+
+
+A. DETALLES PARA CONFIGURAR EL REPO
+	1. Abrir el repo del proyecto desde IntelliJ 
+	2. Iniciar postgress desde la base de datos
+		docker start <id_image>
+B. DETALLES DE LA CREACIÓN DE UNA API (ENTIDADES, MÉTODOS)
+
+1. Crear entidades.java y establecer relaciones con otras entidades
+	@Entity
+	public class ...
+
+2. Crear un repositorio.java para cada entidad como extensión de JPA repository para tener acceso a la base de datos mediante métodos CRUD
+	@Repository
+	public interface TicketRepository extends JpaRepository<Ticket, Long> {
+	    //crear query metthoss y todos los métodos necesarios
+	    //algunos ya vienen por defecto pero no se muestran
+	    Iterable<Ticket> findByEstudianteId(Long estudianteId);
+	}
+
+3. Crear un service.java para cada entidad para poder diseñar la lógica del negocio
+	@Service
+	public class TicketService {
+	...
+		- crear una instancia de <entidad>repository de 2. para usar los métodos CRUD
+		- crear otros métodos 
+4. Crear un controlador para cada entidad con el objetivo de atender solicitudes http
+	@RestController
+	@RequestMapping(/tickets)
+	public class TicketController {
+	...
+		-> crear una instancia de TicketService para acceder a los métodos de negociación y a los 				CRUD
+		
+5. 
+	
+C. DETALLES PARA CREAR UN EVENTO ASÍNCRONO (MANDAR EMAILS CUANDO SE REALICE LA COMPRA DE UN TICKET)
+	//Crear un EmailService.java
+	//Crear un MailConfig.java
+	//Crear un EmailListener.java
+	//Crear un HelloEmailEvent.java
+	//Crear un TicketController.java @RestController
+	
+	MailConfig.java -> nos da la facultad de enviar emails mediante SMTP. Es necesario generar una 				    contraseña desde gmail. Más info en el E2E 03
+	TicketController.java -> lanza el evento "HelloEmailEvent.java" y le manda datos 
+	HelloEmailEvent.java -> recibe los datos y genera algunos getters (otros ya vienen por defecto)
+	EmailListener.java -> se activa solo cuando se lanza un evento. Recibe la data enviaday define:
+		destinatario, asunto, contenidoHTML
+		finalmente manda esas variables a "EmailService.java" meddiante un método creado en esta 
+		última clase
+	
+	EmailService.java -> usa import jakarta.mail.internet.MimeMessage; para dar la facultad de 
+			      enviar correos con formato html. 
+			      Esta clase recibe las variables destinatario, asunto, contenidoHTML y
+			      manda el mensaje o correo !
+			      
+			      
+			      
+6. TESTEO DESDE POSTMAN
+	Usar las siguientes colleciones
+	- Estudiante API Collection de LuisHack2V3_Estudiante -> https://web.postman.co/workspace/My-Workspace~faf132ab-6e7b-4c8e-8634-f3478faaa8ae/collection/37768449-c8f682f1-8bcd-4604-8347-6e5d47be6d3c?action=share&source=copy-link&creator=37768449
+	- Funcion API Collection de LuisHack2V4_Funcion -> https://web.postman.co/workspace/My-Workspace~faf132ab-6e7b-4c8e-8634-f3478faaa8ae/collection/37768449-d60c3abe-aa5d-4cc1-afcb-f89dcb130e75?action=share&source=copy-link&creator=37768449
+	- Ticket API Collection de LuisHack2V5_Ticket -> https://web.postman.co/workspace/My-Workspace~faf132ab-6e7b-4c8e-8634-f3478faaa8ae/collection/37768449-6360711e-bef8-4928-bf26-15c863cd2a8b?action=share&source=copy-link&creator=37768449
+			
+	
