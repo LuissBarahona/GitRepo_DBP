@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @NoArgsConstructor
@@ -40,5 +41,27 @@ public class Ticket {
 
     private LocalDateTime fechaCompra;
     private Integer cantidad;
+
+
+    public String getNombreEstudiante() {
+        return estudiante.getName();
+    }
+
+    public String getNombrePelicula() {
+        return funcion.getNombrePelicula();
+    }
+
+    public String getFechaCompra() {
+        // Crear un objeto LocalDate
+        // Definir el formato deseado
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        // Convertir LocalDate a String
+        String formattedDate = fechaCompra.format(formatter);
+        return formattedDate;
+    }
+
+    public double getPrecioTotal() { //esto debería calcular el precio total, pero estamos retornano el precio de 1 sola  pelicula registrada
+        return funcion.getPrecioPelicula();
+    }
 }
 

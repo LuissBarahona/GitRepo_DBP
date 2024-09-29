@@ -13,6 +13,7 @@ public class TicketController {
     @Autowired
     private TicketService ticketService;
 
+
     //pata mandar correos usando eventos
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
@@ -20,6 +21,9 @@ public class TicketController {
     @PostMapping
     public ResponseEntity<Ticket> createTicket(@RequestBody TicketRequest request) {
         Ticket newTicket = ticketService.createTicket(request.getEstudianteId(), request.getFuncionId(), request.getCantidad());
+
+        // Publicar el evento para mandar el correo
+
         return ResponseEntity.ok(newTicket);
     }
 
@@ -59,11 +63,36 @@ public class TicketController {
         return ResponseEntity.ok(ticketService.findAll());
     }
 
-    //MANDAR CORREROS CUANDO SE CREA UN NUEVO TICKER, ENL CONTENIDO DEL CORREO SERÍA UN QR CON EL ID DEL SUJETO
-    //FORMA 2: END POINT PUBLICADOR PARA MANDAR EMAILS  (EVENTOS, ASINCRONIA)
-    @PostMapping("/crearEmail")
-    public ResponseEntity<String> sendEmail2(@RequestParam String email) {
-        applicationEventPublisher.publishEvent(new HelloEmailEvent(email));
-        return ResponseEntity.ok("¡Hola mundo 2!");
+
+
+    /*
+    @PostMapping("/sendEmailTxt") //crea un ticket y manda un email en formato txt
+    public ResponseEntity<String> sendEmailTxt(@RequestBody TicketRequest request) { //@RequestParam String email
+        Ticket newTicket = ticketService.createTicket(request.getEstudianteId(), request.getFuncionId(), request.getCantidad());
+        applicationEventPublisher.publishEvent(new HelloEmailEvent(newTicket.getId())); //email
+        return ResponseEntity.ok("¡Hola mundo 4 - id!");
+    }
+    */
+
+    /*
+
+
+    @PostMapping("/sendEmailHtml") //crea un ticket y manda un email en formato html
+    public ResponseEntity<String> sendEmailHtml(@RequestBody TicketRequest request) { //@RequestParam String email
+        Ticket newTicket = ticketService.createTicket(request.getEstudianteId(), request.getFuncionId(), request.getCantidad());
+        applicationEventPublisher.publishEvent(new HelloEmailEvent(newTicket.getId())); //email
+        return ResponseEntity.ok("¡Hola mundo 4 - id!");
+    }
+     */
+
+    @PostMapping("/sendEmailHtmlDatos") //crea un ticket y manda un email en formato html y datos en placeholders
+    public ResponseEntity<String> sendEmailHtml(@RequestBody TicketRequest request) { //@RequestParam String email
+        Ticket newTicket = ticketService.createTicket(request.getEstudianteId(), request.getFuncionId(), request.getCantidad());
+        //crear QR
+            //llamar a una función en ticketService que covierta el id del ticket en un QR y retorne la ruta de la imagen QR
+        String rutaQr=ticketService.createQR(newTicket.getId()); //ejemplo
+        newTicket.setQr(rutaQr);
+        applicationEventPublisher.publishEvent(new HelloEmailEvent(newTicket.getId(),  newTicket.getNombreEstudiante(), newTicket.getNombrePelicula(), newTicket.getFechaCompra(), newTicket.getCantidad(), newTicket.getPrecioTotal(),  newTicket.getQr())); //email
+        return ResponseEntity.ok("¡Hola mundo 5 - id!");
     }
 }

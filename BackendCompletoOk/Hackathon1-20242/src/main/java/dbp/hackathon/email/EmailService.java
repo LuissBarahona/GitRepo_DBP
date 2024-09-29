@@ -1,16 +1,14 @@
 package dbp.hackathon.email;
 
 
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import javax.mail.MessagingException;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 
 @Service
 public class EmailService {
@@ -18,6 +16,7 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
+    //Método para mandar un correo en formato texto - funciona
     public void sendSimpleMessage(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
@@ -26,34 +25,20 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    // Método para cargar la plantilla de correo y reemplazar los placeholders
-    public String loadEmailTemplate(String nombre, String nombrePelicula, String fechaFuncion, int cantidadEntradas, double precioTotal, String qr) {
-        StringBuilder contentBuilder = new StringBuilder();
-        try {
-            // Cargar la plantilla HTML del archivo
-            ClassPathResource resource = new ClassPathResource("/home/luisbarahona/Documents/CreatedByBarahona/Repositories_Code/DBP_Repository/Historial_Hackatones/Hackaton2/Hackathon1-20242/src/main/resources");
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8)
-            );
-            String line;
-            while ((line = reader.readLine()) != null) {
-                contentBuilder.append(line).append("\n");
-            }
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Error al cargar la plantilla de correo";
-        }
 
-        // Reemplazar los placeholders con los datos reales
-        String emailBody = contentBuilder.toString();
-        emailBody = emailBody.replace("{{nombre}}", nombre)
-                .replace("{{nombrePelicula}}", nombrePelicula)
-                .replace("{{fechaFuncion}}", fechaFuncion)
-                .replace("{{cantidadEntradas}}", String.valueOf(cantidadEntradas))
-                .replace("{{precioTotal}}", String.format("%.2f", precioTotal))
-                .replace("{{qr}}", qr);
+    //Método mpara mandar correo (HTML) usando mimemessage - funciona
+    public void enviarCorreoHTML(String destinatario, String asunto, String contenidoHTML) throws MessagingException, jakarta.mail.MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-        return emailBody;
+        helper.setTo(destinatario);
+        helper.setSubject(asunto);
+        helper.setText(contenidoHTML, true); // El segundo parámetro `true` indica que el contenido es HTML
+
+        mailSender.send(message);
     }
+
+
+
+
 }
