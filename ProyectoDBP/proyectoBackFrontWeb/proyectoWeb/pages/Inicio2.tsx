@@ -131,7 +131,7 @@ const Inicio2: React.FC = () => {
       {/* Ventana flotante del perfil */}
       {showProfile && (
         <div className="profile-popup">
-          <Profile username="NombreUsuario" email="usuario@example.com" onClose={() => setShowProfile(false)} />
+          <Profile username="NombreUsuario" email="usuario@example.com" type="INFLUENCER" onClose={() => setShowProfile(false)} />
         </div>
       )}
     </div>
