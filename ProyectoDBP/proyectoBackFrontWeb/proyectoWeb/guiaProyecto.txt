@@ -1,0 +1,8 @@
+
+
+
+1. INSTALAR GOOGLE-MAP-REACT PARA INICIO.TSX
+    npm install google-map-react
+    npm install --save-dev @types/google-map-react
+
+    npm i --save-dev @types/node -> para el process

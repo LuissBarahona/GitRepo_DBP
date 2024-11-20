@@ -52,15 +52,81 @@ export const getUserDetails = async (userId: string): Promise<User> => {
     return response.data;
 };
 
-// Example usage
-// (async () => {
-//     try {
-//         const loginResponse = await login({ email: 'test@example.com', password: 'password' });
-//         console.log('Login successful:', loginResponse.token);
 
-//         const userDetails = await getUserDetails('userId');
-//         console.log('User details:', userDetails);
-//     } catch (error) {
-//         console.error('Error:', error);
-//     }
-// })();
+export interface Food {
+    id: number;
+    type: string;
+    name: string;
+    rating: number;
+    restaurant: string;
+    comments: string[];
+    influencer?: string; // Asociado al nombre del influencer
+}
+
+
+export interface Restaurant {
+    id: number;
+    name: string;
+    rating: number;
+    foods: string[];
+    comments: string[];
+    location: { lat: number; lng: number };
+    country?: string;
+}
+
+// Métodos para obtener datos del backend
+
+
+
+
+// api.ts
+
+// Interfaces adicionales
+export interface FoodFilter {
+    search?: string;
+    rating?: number;
+    type?: string;
+    country?: string; // No está en el backend, pero se puede usar para manejar el filtro en el front
+    influencer?: string; // No está en el backend, pero se puede manejar en el front
+}
+
+export interface RestaurantFilter {
+    search?: string;
+    rating?: number;
+    country?: string; // No está en el backend, pero se puede manejar en el front
+}
+
+// Modificación de los métodos para incluir parámetros de filtrado
+export const getFoods = async (token: string, filters?: FoodFilter): Promise<Food[]> => {
+    const response = await axios.get<Food[]>(`${BASE_URL}/api/foods`, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: filters, // Agrega filtros como parámetros en la solicitud
+    });
+    return response.data;
+};
+
+export const getRestaurants = async (token: string, filters?: RestaurantFilter): Promise<Restaurant[]> => {
+    const response = await axios.get<Restaurant[]>(`${BASE_URL}/api/restaurants`, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: filters, // Agrega filtros como parámetros en la solicitud
+    });
+    return response.data;
+};
+
+// Método para búsqueda en Google Maps
+export const searchLocation = async (address: string): Promise<{ lat: number; lng: number }> => {
+    const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ''; // Usa la clave de Google Maps
+    const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
+        params: {
+            address,
+            key: apiKey,
+        },
+    });
+
+    if (response.data.status === 'OK') {
+        const location = response.data.results[0].geometry.location;
+        return { lat: location.lat, lng: location.lng };
+    } else {
+        throw new Error('No se pudo encontrar la ubicación');
+    }
+};
