@@ -1,0 +1,166 @@
+DESARROLLO DEL PROYECTO
+	
+	cd ~/Documents/CreatedByBarahona/Installers/idea-IU-242.21829.142/bin
+	./idea.sh
+	
+	docker start 6f0a091ab6dd
+	
+	
+	
+	   @PostMapping
+    public ResponseEntity<FoodResponseDto> createFood(@RequestBody FoodRequestDto foodRequestDto) {
+        FoodResponseDto createdFood = foodService.createFood(foodRequestDto);
+        return ResponseEntity.ok(createdFood);
+    }
+    
+    
+    - agregar anotacion en tipo de comida para que el tipo de ocmida se aunico
+    - el id de comida no inicia en 1
+    - el id de food rating no inicia en 1
+    - la excepcion para el status de food no funciona
+    
+    
+    TAREA ASGINADA (6) -> tiene a los posts OK
+    
+    TAREA ASIGNADA (8) -> mejroar gets
+    	git checkout main
+    	git fetch origin
+	git checkout 8-probar-el-metodo-get-de-las-entidades
+	
+	git add .
+	git commit -m "Métodos GET and DELETE OK"
+	git push
+	
+    TAREA ASIGNADA () -> probar PUT y PATCH
+	
+	
+	
+    TAREA ASIGNADA (14) -> Poner excepciones a todo
+    	git fetch origin
+	git checkout 14-manejo-de-excepciones-en-todo-el-codigo
+	
+	LISTA DE PETICIONES (GET)
+	1. Peticiones por id de la misma entidad
+		get user (id_user)
+		
+		.
+		.
+		.
+		
+Usuarios 1.1 Listar todos los usuarios 1.2 Obtener detalles del usuario con ID 1 1.3 Crear un nuevo usuario 1.4 Actualizar información del usuario con ID 1 1.5 Eliminar usuario con ID 
+
+Publicaciones 2.1 Listar publicaciones del usuario "Ana Perez" 2.2 Listar historial de comidas del usuario "Ana Perez" 2.3 Listar comentarios que el usuario "Ana Perez" ha realizado 2.4 Listar comentarios que el usuario "Ana Perez" ha realizado al restaurante "El Buen Sabor 7" 2.5 Listar publicaciones recientes
+
+Restaurantes 3.1 Listar todos los restaurantes 3.2 Obtener detalles del restaurante con ID 1 3.3 Crear un nuevo restaurante 3.4 Actualizar información del restaurante con ID 1 3.5 Eliminar restaurante con ID 1
+
+Calificaciones de Comida 4.1 Listar todas las calificaciones de comida 4.2 Obtener calificación de comida con ID 1 4.3 Crear una nueva calificación de comida 4.4 Actualizar calificación de comida con ID 1 4.5 Eliminar calificación de comida con ID 1
+
+Calificaciones de Restaurante 5.1 Listar todas las calificaciones de restaurante 5.2 Obtener calificación de restaurante con ID 1 5.3 Crear una nueva calificación de restaurante 5.4 Actualizar calificación de restaurante con ID 1 5.5 Eliminar calificación de restaurante con ID 1
+
+Comentarios 6.1 Listar todos los comentarios 6.2 Obtener comentario con ID 1 6.3 Crear un nuevo comentario 6.4 Actualizar comentario con ID 1 6.5 Eliminar comentario con ID 1
+		
+	2. Peticiones cruzadas  para la entidad User
+		2. 1 Listar publicaciones del usuario "Ana Perez"
+		2. 2 Listar historial de comidas del usuario "Ana Perez"
+		2. 3 Listar comentarios que el usuario "Ana Perez" ha realizado
+		2. 4 Listar comentarios que el usuario "Ana Perez" ha realizado al restaurante "El Buen   			     Sabor 7"
+		2.5 Listar  
+		
+Usuarios y Publicaciones 1.1 Listar publicaciones de todos los usuarios que han calificado el restaurante "El Buen Sabor 7" 1.2 Listar publicaciones de todos los usuarios que han calificado la comida "Pizza Margherita"
+
+Usuarios y Calificaciones de Comida 2.1 Listar calificaciones de comida realizadas por el usuario "Ana Perez" 2.2 Listar calificaciones de comida realizadas por usuarios que han calificado el restaurante "El Buen Sabor 7"
+
+Usuarios y Calificaciones de Restaurante 3.1 Listar calificaciones de restaurante realizadas por el usuario "Ana Perez" 3.2 Listar calificaciones de restaurante realizadas por usuarios que han calificado la comida "Pizza Margherita"
+
+Restaurantes y Calificaciones de Comida 4.1 Listar calificaciones de comida en el restaurante "El Buen Sabor 7" 4.2 Listar calificaciones de comida en todos los restaurantes que han sido calificados por el usuario "Ana Perez"
+
+ 
+Restaurantes y Comentarios 5.1 Listar comentarios realizados en el restaurante "El Buen Sabor 7" 5.2 Listar comentarios realizados en todos los restaurantes que han sido calificados por el usuario "Ana Perez"
+
+Comidas y Comentarios 6.1 Listar comentarios realizados sobre la comida "Pizza Margherita" 6.2 Listar comentarios realizados sobre todas las comidas que han sido calificadas por el usuario "Ana Perez"
+
+
+
+public FoodResponseDto parchFFood(Long id, FoodRequestDto foodRequestDto) {
+        Food food = foodRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Food not found with id " + id));
+
+        if (foodRequestDto.getName() != null) {
+            food.setName(foodRequestDto.getName());
+        } else {
+            food.setName(food.getName());
+        }
+
+        if (foodRequestDto.getPrice() != null) {
+            food.setPrice(foodRequestDto.getPrice());
+        } else {
+            food.setPrice(food.getPrice());
+        }
+
+        if (foodRequestDto.getStatus() != null) {
+            //food.setStatus(foodRequestDto.getStatus());
+            String status = foodRequestDto.getStatus().name(); // Convert FoodStatus to String
+            if (!status.equals("AVAILABLE") && !status.equals("UNAVAILABLE")) {
+                food.setStatus(food.getStatus());
+                throw new ValidationException("Status must be either 'AVAILABLE' or 'UNAVAILABLE'");
+            }
+            food.setStatus(FoodStatus.valueOf(status));
+
+        } else {
+            food.setStatus(food.getStatus());
+        }
+
+        if (foodRequestDto.getRestaurantId() != null) {
+            food.setRestaurant(getRestaurantById(foodRequestDto.getRestaurantId()));
+        } else {
+            food.setRestaurant(food.getRestaurant());
+        }
+
+        food = foodRepository.save(food);
+        return mapToDto(food);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    PENDIENTE
+    
+    A. Modelos, Repositorios y DTOs  (3:4)
+    - comentar los endpoints en postman y buenas paracticas {{host}}
+    - restaurant type food
+    - email unico 
+    
+    B. Testing y Manejo de Errores (0:4)
+    - testing falta
+    - manejo de errores al 100%
+    - 
+    C. Seguridad en Aplicaciones (0:4)
+    
+    
+    D. Controllers, HTTP Codes y APIs (1)
+    
+     
+    E. Eventos y Asincronía  (2)
+    
+    
+    F. Deployment (2)
+    
+    G. Github y planfidiss (2:3)
+    

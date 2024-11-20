@@ -1,0 +1,137 @@
+GUIA PROYECTO MOBILE USING REACT NATIVE
+
+A. CREAR UN PROYECTO Y CORRERLO
+---------------------------------------------------------
+1. Crea un Expo Project
+	npx create-expo-app@latest --template blank-typescript
+	nombre: mobile001
+	
+
+2. Previsualizar  y testear nuestra React Native App en Android usando:
+	- emulador de Android en la PC: Genymotion, Android Studiom Xcode
+	- Expo Go en el celu Android
+	
+	- Cualquier modificación al App.tsx se mostrará en el celular en tiempo real después del CTRL+C
+	
+3. Correr aplicación
+	npm expo start o npm start
+	
+------------------------------------------------------------
+
+
+B. AGREGAR UN COMPONENTE DE REACT NATIVE PAPER Y CORRERLO
+------------------------------------------------------------
+4. Instalar dependencias
+	npm install react-native-paper //lib
+	npm install react-native-safe-area-context
+	
+5. Googlear REACT NATIVE PAPER y buscar un botón
+	<Button icon="camera" mode="contained" onPress={() => console.log('Button pressed')}>
+        Press me
+      </Button>
+
+6. Agregar el "html" encontrado e importar React Native Paper dentro de App.tsx
+	import { Button } from 'react-native-paper'; 
+------------------------------------------------------------
+	
+
+C. AGREGAR NAVEGACIÓN A NUESTRO PROYECTO
+-------------------------------------------------------------
+4. Instalar dependencias de React Navigation
+	npm install @react-navigation/native 
+	npx expo install react-native-screens react-native-safe-area-context
+
+5. Importar NavigationContainer y usarlo para rodear el html principal de App.tsx
+	import { NavigationContainer } from "@react-navigation/native";
+	
+	export default function App() {
+	return (
+		<NavigationContainer>
+		...
+		</NavigationContainer>
+		);
+	}	
+	
+6. Elegir el tipo de navegación
+	6.1 TIPO 1: NATIVE STACK NAVIGATOR
+	npm install @react-navigation/native-stack
+	
+	/*
+		import { createNativeStackNavigator } from '@react-navigation/native-stack';
+		const Stack = createNativeStackNavigator();
+		export default function MyStack() {
+			return (
+				<Stack.Navigator>
+				<Stack.Screen name="Home" component={HomeScreen} />
+				<Stack.Screen name="Notifications" component={NotificationsScreen} />
+				<Stack.Screen name="Profile" component={ProfileScreen} />
+				<Stack.Screen name="Settings" component={SettingsScreen} />
+				</Stack.Navigator>
+			);
+		}
+	
+	
+	*/
+	
+	6.2 TIPO 2: DRAWER NAVIGATOR
+		npm install @react-navigation/drawer
+		npx expo install react-native-gesture-handler react-native-reanimated
+		
+	6.3 TIPO 3: BOTTOM TABS NAVIGATOR
+		npm install @react-navigation/bottom-tabs
+	
+		
+		import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+		const Tab = createBottomTabNavigator();
+		export default function MyTabs() {
+		return (
+		<Tab.Navigator>
+		<Tab.Screen name="Home" component={HomeScreen} />
+		<Tab.Screen name="Settings" component={SettingsScreen} />
+		</Tab.Navigator>
+		);
+		}
+
+	6.4 TIPO 4: MATERIAL TOP TABS NAVIGATOR
+		npm install @react-navigation/material-top-tabs react-native-tab-view
+		npx expo install react-native-pager-view	
+		
+		
+		import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+		const Tab = createMaterialTopTabNavigator();
+		export default function MyTabs() {
+		return (
+		<Tab.Navigator>
+		<Tab.Screen name="Home" component={HomeScreen} />
+		<Tab.Screen name="Settings" component={SettingsScreen} />
+		</Tab.Navigator>
+		);
+		}
+-------------------------------------------------------------
+	
+	
+	
+	
+	
+	
+ADICIONALMENTE:
+1. Componentes básicos para App.tsx
+	- View
+	- Text
+	- Image
+	- TextInput
+	- FlatList
+	- ScrollView 
+	- Button
+	- TouchableOpacity
+	- ActivityIndicator
+	- StatusBar
+	
+	- More in REACTIVE NATIVE PAPER:
+		npm install react-native-paper //lib
+		npm install react-native-safe-area-context
+	- Navegación usando React Navigation:
+		npm install @react-navigation/native //lib
+		npx expo install react-native-screens react-native-safe-area-context
+		
+		
