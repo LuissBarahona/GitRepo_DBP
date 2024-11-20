@@ -113,8 +113,26 @@ const Inicio2: React.FC = () => {
               </div>
               <button type="submit" className="submit-button">Publicar</button>
             </form>
+
+            
           </div>
         )}
+
+        {/* Mensaje y botones de categorías */}
+        <div className="post-form2">
+        <div className="category-section">
+              <h4>RECOMIENDA RESTAURANTES EN FUNCIÓN A UNA CATEGORÍA</h4>
+              <div className="category-buttons">
+                <button>CATEGORÍA 1: Celebración de aniversario/petición</button>
+                <button>CATEGORÍA 2: Celebración de cumpleaños</button>
+                <button>CATEGORÍA 3: Ruptura Amorosa</button>
+                <button>CATEGORÍA 4: Graduación</button>
+                <button>CATEGORÍA 5: Ambiente Cristiano</button>
+                <button>CATEGORÍA 6: Cena de gala/negocios</button>
+              </div>
+            </div>
+        </div>
+        
 
         <div className="content-placeholder">
           {showPostForm ? "Aquí se muestra el formulario para crear un post." : "Haz clic en la casita para crear un post."}

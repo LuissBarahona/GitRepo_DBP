@@ -63,6 +63,14 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
+  .post-form2 {
+    margin: 20px;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
   .form-group {
     margin-bottom: 10px;
   }
@@ -120,5 +128,39 @@
       border-left: none;
       border-top: 1px solid #ddd;
     }
+  }
+  
+
+  .category-section {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .category-section h4 {
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .category-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .category-buttons button {
+    padding: 10px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    background-color: #da920d;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .category-buttons button:hover {
+    background-color: #2771d1;
   }
   

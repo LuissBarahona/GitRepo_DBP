@@ -8,6 +8,9 @@ import Inicio2 from '../pages/Inicio2';
 
 import Chat from '../pages/Chat';
 
+import Inicio3 from '../pages/Inicio3';
+
+
 const App: React.FC = () => {
     return (
         <Router>
@@ -18,6 +21,8 @@ const App: React.FC = () => {
                 <Route path="/inicio" element={<Inicio />} />
                 <Route path="/inicio2" element={<Inicio2 />} />
                 <Route path="/chat" element={<Chat />} />
+                <Route path="/inicio3" element={<Inicio3 />} />
+                
             </Routes>
         </Router>
     );
