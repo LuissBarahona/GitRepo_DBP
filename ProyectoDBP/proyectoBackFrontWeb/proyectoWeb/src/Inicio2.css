@@ -1,11 +1,17 @@
 /* Inicio2.css */
 
 .inicio-container {
+    background-image: url('../src/assets/Img2.jpg');
+    background-size: cover; /* Hace que la imagen cubra todo el fondo */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    min-height: 100vh; /* Asegura que el contenedor ocupe al menos el alto de la pantalla */
     display: flex;
-    height: 100vh;
+    flex-direction: column;
   }
   
   .main-content {
+    
     width: 100%;
     transition: width 0.3s ease;
   }
